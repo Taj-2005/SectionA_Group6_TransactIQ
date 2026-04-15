@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.venv/
+venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data (keep placeholders, ignore real datasets)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/raw/README.md
+
+# OS/editor
+.DS_Store
+.vscode/
+
