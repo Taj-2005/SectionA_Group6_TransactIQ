@@ -25,6 +25,7 @@ data/processed/*
 !data/processed/.gitkeep
 !data/raw/README.md
 !data/raw/dirty_financial_transactions.csv
+!data/processed/cleaned_financial_transactions.csv
 
 # OS/editor
 .DS_Store
