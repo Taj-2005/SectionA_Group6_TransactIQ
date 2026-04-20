@@ -6,7 +6,7 @@ This directory contains the cleaned and preprocessed financial transaction recor
 
 * **Filename:** `cleaned_financial_transactions.csv`
 * **Source:** `dirty_financial_transactions.csv`
-* **Cleaning Script:** `notebooks/Cleaned_financial_transactions.ipynb`
+* **Cleaning Script:** `notebooks/02_cleaning.ipynb`
 
 ## Data Cleaning & Preprocessing Steps
 
@@ -19,15 +19,29 @@ The raw data underwent a series of cleaning and formatting steps to ensure analy
 - Converted text columns specifically `Payment_Method` and `Transaction_Status` to lowercase.
 - Stripped leading and trailing whitespaces.
 
-### 3. Categorical Standardization
+### 3. Product Name Standardization
+- **`Product_Name`** was standardized into these 6 canonical categories:
+  - `Tablet`
+  - `Coffee Machine`
+  - `Laptop`
+  - `Smartphone`
+  - `Headphones`
+  - `Coffee`
+- Fixed common truncations/typos such as:
+  - `Tab`, `T`, `Ta`, `Tabl`, `Table` → `Tablet`
+  - `Cof`, `Coff`, `Coffe`, `C`, `Co` → `Coffee`
+  - `Coffee M`, `Coffee Ma`, `Coffee Mach*`, `Coffee Mac*` → `Coffee Machine`
+  - Similar short forms for Laptop/Smartphone/Headphones were mapped back to their full names.
+
+### 4. Categorical Standardization
 - **`Payment_Method`**: Standardized values to `paypal`, `creditcard`, and `cash`. Instances like "pay pal" and "credit card" were mapped properly.
 - **`Transaction_Status`**: Unified instances of "complete" to standard "completed". 
 
-### 4. Date and Time Processing
+### 5. Date and Time Processing
 - **`Transaction_Date`**: Converted the text format into robust Python `datetime` objects.
 - **Dropping Bad Dates**: Removed records where dates couldn't be parsed (converted to `NaT`).
 
-### 5. Numerical Data Validation and Imputation
+### 6. Numerical Data Validation and Imputation
 - **`Price`**:
   - Removed all non-numeric currency characters like `$` and `,`.
   - Parsed into float values.
@@ -37,13 +51,13 @@ The raw data underwent a series of cleaning and formatting steps to ensure analy
   - Converted negative quantities into their absolute values.
   - Imputed missing values with the median.
 
-### 6. Managing Missing Critical Identifiers
+### 7. Managing Missing Critical Identifiers
 - Dropped any records without a `Transaction_ID` or `Customer_ID`, as imputing unique identifiers could cause duplication or bad links downstream.
 
-### 7. Managing Missing Transaction Statuses
+### 8. Managing Missing Transaction Statuses
 - Populated missing rows for `Transaction_Status` with string `'unknown'`.
 
-### 8. Feature Engineering
+### 9. Feature Engineering
 - Extracted multiple date parts from `Transaction_Date` into standalone columns to boost temporal analysis and plotting in Tableau:
   - `Transaction_Year`
   - `Transaction_Month`
