@@ -17,7 +17,8 @@ The project is designed to be **decision-centric** (insights and actions), not v
 - **Data Lead**: Dakarapu Hemamdhar Nath (`@Hemamdhar`), Sushant Guri (`@sushantguri`)
 - **ETL Lead**: Jivit Rana (`@Jivit87`)
 - **Analysis Lead**: Parthraj Singh Bhati (`@parthrajsinghbhati`)
-- **PPT & Quality Lead**: Samarth Chaudhary (`@iamsamarth1011`), Sushant Guri (`@sushantguri`)
+- **PPT & Quality Lead**: Samarth Chaudhary (`@iamsamarth1011`),  Sushant Guri(`@sushantguri`)
+ 
 
 ---
 
