@@ -1,55 +1,38 @@
-# Processed Financial Transactions Data
+# Processed WildChat Data
 
-This directory contains the cleaned and preprocessed financial transaction records prepared for visualization and analysis in Tableau.
+This directory contains the cleaned and flattened WildChat conversation records prepared for visualization and analysis in Tableau.
 
 ## File Information
 
-* **Filename:** `cleaned_financial_transactions.csv`
-* **Source:** `dirty_financial_transactions.csv`
-* **Cleaning Script:** `notebooks/Cleaned_financial_transactions.ipynb`
+* **Filename:** `cleaned_wildchat_data.csv`
+* **Source:** `allenai/WildChat-4.8M` (Hugging Face Dataset)
+* **Cleaning Script:** `notebooks/02_cleaning.ipynb`
 
 ## Data Cleaning & Preprocessing Steps
 
-The raw data underwent a series of cleaning and formatting steps to ensure analytical reliability. Below are all the operations performed:
+The raw data underwent a series of cleaning, flattening, and formatting steps to ensure analytical reliability. Below are all the operations performed:
 
-### 1. Handling Duplicates
-- Removed exact duplicate rows from the dataset to prevent skewed distributions.
+### 1. Data Flattening
+- The original dataset contained nested conversation logs. These were flattened so each row represents a distinct turn. 
 
 ### 2. General Text Cleaning
-- Converted text columns specifically `Payment_Method` and `Transaction_Status` to lowercase.
-- Stripped leading and trailing whitespaces.
+- **Unicode Normalization:** Normalized text data using NFKC to ensure consistent encodings.
+- **Whitespace Removal:** Removed excessive line breaks and multiple spaces.
 
-### 3. Categorical Standardization
-- **`Payment_Method`**: Standardized values to `paypal`, `creditcard`, and `cash`. Instances like "pay pal" and "credit card" were mapped properly.
-- **`Transaction_Status`**: Unified instances of "complete" to standard "completed". 
+### 3. Data Validation & Quality Checks
+- Validated that the text is at least 3 characters long.
+- Ensured the text contains at least one alphanumeric character.
 
-### 4. Date and Time Processing
-- **`Transaction_Date`**: Converted the text format into robust Python `datetime` objects.
-- **Dropping Bad Dates**: Removed records where dates couldn't be parsed (converted to `NaT`).
+### 4. Filtering
+- Excluded any records where the text was determined to be invalid based on the above quality checks.
 
-### 5. Numerical Data Validation and Imputation
-- **`Price`**:
-  - Removed all non-numeric currency characters like `$` and `,`.
-  - Parsed into float values.
-  - Formatted negative price numbers into positive numbers using absolute values (assuming they were typos for refund magnitudes but should be strictly positive for this dataset).
-  - Imputed missing values with the median.
-- **`Quantity`**:
-  - Converted negative quantities into their absolute values.
-  - Imputed missing values with the median.
-
-### 6. Managing Missing Critical Identifiers
-- Dropped any records without a `Transaction_ID` or `Customer_ID`, as imputing unique identifiers could cause duplication or bad links downstream.
-
-### 7. Managing Missing Transaction Statuses
-- Populated missing rows for `Transaction_Status` with string `'unknown'`.
-
-### 8. Feature Engineering
-- Extracted multiple date parts from `Transaction_Date` into standalone columns to boost temporal analysis and plotting in Tableau:
-  - `Transaction_Year`
-  - `Transaction_Month`
-  - `Transaction_Day`
-  - `Transaction_DayOfWeek` (0 = Monday, 6 = Sunday)
-  - `Transaction_Hour`
+### 5. Feature Engineering
+- Added several new columns useful for analysis:
+  - `text_length`: The character count of the cleaned text.
+  - `word_count`: The word count of the cleaned text.
+  - `turn_id`: The ID of the turn within the conversation.
+  - `conversation_length`: The total number of turns in the conversation.
+- Structured the original nested dataset into easy-to-use columns such as `conversation_id`, `role`, `language`, and `timestamp`.
 
 ## Usage Configuration
-The finalized CSV is standardized safely without non-numeric clutter, missing values, duplicates, and with properly assigned temporal variables, hence ready for data modeling and dashboarding in platforms like Tableau without requiring any further alterations.
+The finalized CSV is structured and safely formatted without excessive whitespace or invalid characters. Each row corresponds to a single conversation turn with all relevant metadata attached, making it perfectly tailored for data modeling and dashboarding in platforms like Tableau.
