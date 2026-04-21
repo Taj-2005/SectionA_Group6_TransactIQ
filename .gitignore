@@ -20,5 +20,33 @@ ENV/
 
 # OS/editor
 .DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
 .vscode/
 
+# Data (keep placeholders / metadata, not large artifacts)
+data/**/*
+!data/**/.gitkeep
+!data/**/README.md
+!data/**/.gitignore
+
+# Model artifacts / embeddings / caches
+**/*.pkl
+**/*.joblib
+**/*.onnx
+**/*.pt
+**/*.pth
+**/*.bin
+**/*.safetensors
+**/*.npy
+**/*.npz
+
+# Tableau extracts / packaging
+**/*.hyper
+**/*.tde
+**/*.twbr
+
+# Mac office temp files
+~$*.docx
+~$*.pptx
