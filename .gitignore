@@ -25,11 +25,12 @@ ENV/
 .Trashes
 .vscode/
 
-# Data (keep placeholders / metadata, not large artifacts)
+# Data (keep placeholders / metadata, and CSV files, exclude large artifacts)
 data/**/*
 !data/**/.gitkeep
 !data/**/README.md
 !data/**/.gitignore
+!data/**/*.csv
 
 # Model artifacts / embeddings / caches
 **/*.pkl
