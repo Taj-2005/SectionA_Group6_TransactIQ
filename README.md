@@ -88,4 +88,4 @@ SectionA_Group6_DVA/
 - **Data Lead**: Dakarapu Hemamdhar Nath (`@Hemamdhar`), Sushant Guri (`@sushantguri`)
 - **ETL Lead**: Jivit Rana (`@Jivit87`)
 - **Analysis Lead**: Parthraj Singh Bhati (`@parthrajsinghbhati`)
-- **PPT & Quality Lead**: Samarth Chowdary (`@iamsamarth1011`), Sushant Guri (`@sushantguri`)
+- **PPT & Quality Lead**: Samarth Chaudhary (`@iamsamarth1011`), Sushant Guri (`@sushantguri`)
