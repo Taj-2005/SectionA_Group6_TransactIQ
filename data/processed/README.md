@@ -1,197 +1,225 @@
-# Processed Data Directory
+# WildChat Processed Data Repository
 
-This directory contains the cleaned, processed, and analytics-ready datasets generated from the WildChat-1M dataset through our comprehensive ETL pipeline.
+This directory contains the processed and cleaned datasets derived from the WildChat-1M dataset, generated through a comprehensive ETL pipeline and analytical workflows.
 
-## Dataset Overview
+## Overview
 
-The WildChat Analytics Platform processes the AllenAI WildChat-1M dataset containing real-world ChatGPT conversations with metadata including geographic information, toxicity scores, and conversation structures. Our pipeline transforms raw conversational data into structured analytics-ready formats.
-
-## Files Description
-
-### Core Datasets
-
-#### `conversations_clean.csv`
-- **Description**: Cleaned conversation-level dataset with aggregated metrics
-- **Rows**: ~100K unique conversations (sample) / ~1M (full dataset)
-- **Key Columns**:
-  - `conversation_id`: Unique identifier for each conversation
-  - `turn_count`: Number of turns in the conversation
-  - `start_time`, `end_time`: Conversation timestamps
-  - `duration_seconds`: Length of conversation in seconds
-  - `user_message_count`, `assistant_message_count`: Message counts by role
-  - `avg_sentiment_score`: Average VADER sentiment for user messages
-  - `toxicity_score`: Composite toxicity score from OpenAI moderation
-  - `country`, `state`: Geographic information
-  - `model`: AI model used (gpt-3.5-turbo, gpt-4, etc.)
-
-#### `messages_sample.csv`
-- **Description**: Individual message-level dataset with full text content
-- **Rows**: ~500K+ individual messages (sample) / ~5M+ (full dataset)
-- **Key Columns**:
-  - `conversation_id`, `turn_id`: Message identifiers
-  - `role`: User or assistant
-  - `content`: Original message text
-  - `content_clean`: Preprocessed text content
-  - `token_count`: Number of tokens in message
-  - `sentiment_score`: VADER sentiment score (user messages only)
-  - `language`: Detected language code
-  - `timestamp`: Message timestamp
-  - `toxic`: Boolean toxicity flag
-
-### Analytics Outputs
-
-#### `user_segments.csv`
-- **Description**: User segmentation analysis with behavioral metrics
-- **Key Features**:
-  - **Power Users**: Top 10% most active users by message count
-  - **Casual Users**: Bottom 50% by activity
-  - **Regular Users**: Middle 40% by activity
-  - Metrics include: conversation frequency, average message length, sentiment patterns, model preferences
-
-#### `prompt_categories.csv`
-- **Description**: Categorized prompts using TF-IDF and K-means clustering
-- **Categories**:
-  - Coding and Technical
-  - Factual Question Answering
-  - Creative Writing
-  - Emotional Support
-  - Roleplay or Persona
-  - Harmful or Policy Violating
-  - Other
-- **Columns**: Category labels, confidence scores, cluster centroids
-
-#### `geo_summary.csv`
-- **Description**: Geographic aggregation of conversation metrics
-- **Granularity**: Country and state-level summaries
-- **Metrics**: Conversation counts, average sentiment, toxicity rates, model usage patterns
-
-#### `daily_kpis.csv`
-- **Description**: Time-series key performance indicators
-- **Metrics**: Daily conversation volumes, user engagement metrics, sentiment trends, toxicity incidents
-- **Purpose**: Dashboard and reporting integration
-
-#### `wildchat_combined.csv`
-- **Description**: Master dataset combining all processed features
-- **Usage**: Comprehensive analysis and machine learning model training
-- **Size**: Largest consolidated dataset with all engineered features
+The processed data is the result of a multi-stage data processing pipeline that transforms raw WildChat conversation data into analysis-ready datasets. The pipeline includes data extraction, cleaning, text preprocessing, feature engineering, and statistical analysis to support comprehensive analytics and dashboard visualization.
 
 ## Data Processing Pipeline
 
 ### Stage 1: Extraction
-- Source: AllenAI WildChat-1M dataset from HuggingFace Hub
-- Method: Streaming extraction with configurable batch sizes
-- Volume: 1M conversations, 5M+ message turns
+- **Source**: AllenAI WildChat-1M dataset
+- **Sample Size**: 50,000 conversations (streaming mode for efficiency)
+- **Raw Fields**: 14 columns including conversation metadata, timestamps, and moderation data
 
 ### Stage 2: Cleaning
-- Conversation explosion (list-of-dicts to structured format)
-- Deduplication and quality checks
-- Missing value handling and data type normalization
-- Geographic and temporal validation
+- **Duplicate Removal**: Eliminated duplicate conversations based on `conversation_hash`
+- **Missing Value Handling**: 
+  - `country` → "UNKNOWN"
+  - `language` → "und" (undetermined)
+- **Data Type Conversion**: 
+  - `toxic` → integer
+  - `timestamp` → datetime (UTC)
+- **Final Cleaned Dataset**: 49,550 unique conversations
 
 ### Stage 3: Text Preprocessing
-- Text normalization and PPI redaction removal
-- Language detection (langdetect)
-- Token counting and content length analysis
-- VADER sentiment analysis (user messages only)
+- **Conversation Flattening**: Transformed nested conversation structure into message-level records (290,714 messages)
+- **Text Cleaning**: 
+  - Lowercase conversion
+  - Placeholder removal ([name], [email])
+  - Whitespace normalization
+- **Feature Extraction**:
+  - Token count (word count)
+  - Sentiment analysis using VADER
+  - Toxicity scoring from OpenAI moderation data
 
 ### Stage 4: Feature Engineering
-- OpenAI moderation score parsing
-- Composite toxicity scoring
-- User behavior metrics
-- Conversation-level aggregations
-- Temporal and geographic features
+- **Conversation-Level Aggregates**:
+  - Turn count per conversation
+  - Average prompt length
+  - Average sentiment score
+  - Response quality scoring
+  - Drop-off flags (≤2 turns)
+- **User Classification**: Prompt categorization (Coding, Factual, Creative, Casual, Other)
+- **Geographic Processing**: Country-based aggregation and toxicity rates
+- **Temporal Analysis**: Daily KPIs and trends
 
-### Stage 5: Analytics & ML
-- User segmentation (power user identification)
-- Prompt categorization (TF-IDF + K-means)
-- Geographic clustering
-- Time-series KPI generation
+### Stage 5: Output Generation
+Multiple processed datasets generated for different analytical perspectives:
 
-## Quality Assurance
+## Dataset Files
 
-### Data Validation
-- Schema validation at each pipeline stage
-- Referential integrity checks
-- Outlier detection and handling
-- Missing data impact assessment
+### Core Datasets
 
-### Privacy & Security
-- IP address hashing (original IPs not stored)
-- PII redaction placeholder removal
-- Toxic content flagging and filtering
-- GDPR-compliant data handling
+#### `conversations_clean.csv`
+**Primary analysis dataset with conversation-level features**
+- **Records**: 49,550 conversations
+- **Key Features**:
+  - `conversation_id`: Unique conversation identifier
+  - `conv_turn_count`: Number of message turns
+  - `avg_prompt_len`: Average prompt length in tokens
+  - `avg_sentiment`: Average sentiment score (-1 to 1)
+  - `country`, `language`, `model`: Geographic and technical metadata
+  - `toxicity_score`: Moderation-based toxicity score
+  - `toxic_flag`: Binary toxicity indicator (>0.30 threshold)
+  - `drop_off_flag`: Early conversation termination flag
+  - `response_quality_score`: Composite quality metric
+  - `prompt_category`: User intent classification
+
+#### `wildchat_combined_master.csv`
+**Comprehensive master dataset with all features and daily KPIs**
+- **Records**: 49,550 conversations
+- **Features**: All conversation-level features plus daily aggregates
+- **Additional Fields**:
+  - `date`: Processing date
+  - `conversation_count`: Daily conversation volume
+  - `avg_tokens`: Daily average token usage
+  - `toxicity_rate`: Daily toxicity percentage
+
+### Analytical Datasets
+
+#### `daily_kpis.csv`
+**Time-series data for trend analysis**
+- **Records**: 22 days of data
+- **Metrics**:
+  - `timestamp`: Date
+  - `conversation_count`: Daily conversation volume
+  - `avg_tokens`: Average token usage per day
+  - `toxicity_rate`: Daily toxicity percentage
+
+#### `geo_summary.csv`
+**Geographic aggregation for regional analysis**
+- **Records**: Countries with conversation activity
+- **Metrics**:
+  - `country`: Country name
+  - `conversation_count`: Total conversations per country
+  - `toxicity_rate`: Country-specific toxicity rate
+
+#### `messages_sample.csv`
+**Message-level data for detailed conversation analysis**
+- **Records**: Sample of flattened message data
+- **Features**:
+  - Individual message content and metadata
+  - Role-based analysis (user vs assistant)
+  - Message-level sentiment and toxicity
+
+#### `prompt_categories.csv`
+**User intent classification data**
+- **Categories**: Coding, Factual, Creative, Casual, Other
+- **Usage**: Understanding user behavior patterns
+
+## Data Quality and Validation
+
+### Statistical Validation
+- **Model Performance Comparison**: T-tests confirm significant differences between GPT-3.5 and GPT-4 quality scores
+- **User Segmentation**: ANOVA tests validate distinct behavioral clusters
+- **Feature Independence**: Chi-square tests analyze categorical relationships
+
+### Quality Metrics
+- **Response Quality Score**: Composite metric considering prompt length and toxicity
+- **Sentiment Analysis**: VADER-based sentiment scoring (-1 to 1 scale)
+- **Toxicity Detection**: Multi-category moderation analysis with configurable thresholds
+
+### Known Issues and Patches
+- **Session Duration**: Applied simulation patch for realistic session duration based on turn count
+- **Data Completeness**: Handled missing values through imputation strategies
 
 ## Usage Guidelines
 
-### For Analytics
-- Use `conversations_clean.csv` for conversation-level analysis
-- Use `messages_sample.csv` for message-level insights
-- Use `user_segments.csv` for user behavior studies
-- Use `geo_summary.csv` for geographic analysis
+### For Executive Summary Analysis
+- Use `conversations_clean.csv` for high-level KPIs
+- Reference `daily_kpis.csv` for temporal trends
+- Leverage `geo_summary.csv` for geographic insights
 
-### For Machine Learning
-- Use `wildchat_combined.csv` for comprehensive model training
-- Use `prompt_categories.csv` for classification tasks
-- Use `user_segments.csv` for user prediction models
+### For Operational Intelligence
+- Analyze user segments in `conversations_clean.csv`
+- Examine session patterns and drop-off predictors
+- Use `messages_sample.csv` for detailed interaction analysis
 
-### For Reporting
-- Use `daily_kpis.csv` for dashboard integration
-- Use `geo_summary.csv` for geographic reporting
-- All datasets include timestamp fields for time-series analysis
+### For Safety and Trust Analysis
+- Focus on toxicity metrics across all datasets
+- Analyze sentiment patterns by prompt category
+- Cross-reference moderation data with user behavior
+
+## Data Schema
+
+### Conversation-Level Features
+```python
+{
+    "conversation_id": "string",           # Unique identifier
+    "conv_turn_count": "integer",          # Number of message exchanges
+    "avg_prompt_len": "float",             # Average prompt length
+    "avg_sentiment": "float",              # Sentiment score (-1 to 1)
+    "country": "string",                   # Country code/name
+    "language": "string",                  # Language code
+    "model": "string",                     # AI model used
+    "toxicity_score": "float",             # Toxicity probability
+    "toxic_flag": "integer",               # Binary toxicity indicator
+    "drop_off_flag": "integer",            # Early termination flag
+    "response_quality_score": "float",     # Composite quality metric
+    "prompt_category": "string"            # User intent classification
+}
+```
+
+### Daily KPI Features
+```python
+{
+    "timestamp": "date",                   # Date
+    "conversation_count": "integer",       # Daily volume
+    "avg_tokens": "float",                 # Average token usage
+    "toxicity_rate": "float"               # Toxicity percentage
+}
+```
+
+## Analytical Insights Available
+
+### User Behavior Patterns
+- **Segmentation**: Power Users, Casual Explorers, Task-Oriented, At-Risk Users, Adversarial/Abuse
+- **Engagement Metrics**: Session duration, turn count, prompt complexity
+- **Drop-off Predictors**: Logistic regression identifies key churn factors
+
+### Content Analysis
+- **Prompt Categories**: Classification across coding, factual, creative, and casual intents
+- **Sentiment Trends**: Emotional tone analysis across user segments
+- **Quality Assessment**: Response quality scoring by model and user type
+
+### Safety and Trust
+- **Toxicity Monitoring**: Multi-dimensional toxicity detection and trending
+- **Geographic Risk**: Country-specific toxicity patterns
+- **Model Safety**: Comparative safety analysis across AI models
 
 ## Technical Specifications
 
-### File Formats
-- **Format**: CSV (UTF-8 encoded)
-- **Compression**: Uncompressed for direct Tableau/BI tool integration
-- **Size**: Varies by dataset (see individual file sizes)
+### Processing Environment
+- **Primary Language**: Python 3.x
+- **Core Libraries**: pandas, numpy, scikit-learn, nltk, vaderSentiment
+- **Data Sources**: AllenAI WildChat-1M dataset via HuggingFace datasets
 
-### Schema Standards
-- **Timestamps**: ISO 8601 format, UTC timezone
-- **Identifiers**: SHA-256 hashes for conversation IDs
-- **Scores**: Float values between 0.0 and 1.0
-- **Categories**: String labels with consistent casing
-
-### Performance Notes
-- Optimized for pandas and SQL operations
-- Indexed on conversation_id and timestamp fields
-- Memory-efficient dtypes used throughout
-- Suitable for both batch and streaming analytics
+### Performance Metrics
+- **Processing Volume**: 50,000 conversations → 290,714 messages
+- **Memory Usage**: Optimized streaming for large dataset handling
+- **Output Size**: ~20MB of processed data across all files
 
 ## Data Freshness
 
-- **Last Updated**: Generated during pipeline execution
-- **Update Frequency**: On-demand pipeline runs
-- **Version Control**: Git-tracked with data versioning
-- **Backup**: Original raw data preserved in `/data/raw/`
+- **Last Updated**: April 2026
+- **Processing Date**: Current timestamp embedded in master dataset
+- **Version Control**: Git-tracked with CI/CD pipeline validation
 
-## Integration Points
+## Contact and Support
 
-### Tableau Dashboard
-- Direct CSV connection support
-- Geographic visualization ready
-- Time-series dashboard compatible
+For questions about the processed data, methodology, or analytical insights:
+- Reference the source notebooks in `/notebooks/` directory
+- Consult the ETL pipeline in `ETL _PIPELINE_NOTEBOOK/WildChat_Notebook.ipynb`
+- Review analytical notebooks for detailed methodology
 
-### ML Pipeline
-- Scikit-learn compatible formats
-- Feature-engineered datasets ready
-- Train/test split recommendations available
+## Data Usage Ethics
 
-### API Integration
-- RESTful data service endpoints
-- Real-time analytics support
-- Caching layer for performance
+This processed dataset maintains user privacy through:
+- IP address hashing
+- Content redaction where applicable
+- Aggregated geographic data
+- Anonymized user identifiers
 
-## Support & Documentation
-
-For detailed pipeline code and methodology, refer to:
-- Main notebook: `/notebooks/WildChat_Notebook.ipynb`
-- Configuration: `/configs/`
-- Documentation: `/docs/`
-
----
-
-**Generated by**: WildChat Analytics Platform - Group G-6 (Section A)  
-**Institution**: Rishihood University - Data Analytics Capstone 2025  
-**Pipeline Version**: 1.0  
-**Last Run**: See pipeline execution logs for timestamp
+Users should adhere to the original WildChat dataset terms of service and applicable data protection regulations.
