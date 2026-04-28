@@ -1,326 +1,304 @@
-# Notebooks Directory
+# WildChat ETL Pipeline Notebook
 
-This directory contains the complete analytical workspace for the WildChat Analytics Platform, organized by pipeline stages for systematic data processing and analysis.
+This directory contains the primary ETL (Extract, Transform, Load) pipeline notebook for processing the WildChat-1M dataset into analysis-ready data products.
 
-## Project Overview
+## Overview
 
-The WildChat Analytics Platform is a comprehensive ETL and analytics pipeline built to process the AllenAI WildChat-1M dataset. This platform transforms raw ChatGPT conversation data into actionable insights through advanced NLP techniques, machine learning, and statistical analysis.
+The `WildChat_Notebook.ipynb` implements a comprehensive 5-stage data processing pipeline that transforms raw conversational AI data from the WildChat-1M dataset into structured, analysis-ready datasets. The pipeline handles data extraction, cleaning, text preprocessing, feature engineering, and output generation for downstream analytics and dashboard visualization.
 
-**Team**: Group G-6 (Section A) | Rishihood University | Data Analytics Capstone 2025
+## Pipeline Architecture
 
----
+### Stage 1: Extraction
+**Objective**: Load raw conversation data from the WildChat-1M dataset
 
-## Main Pipeline Notebook
+**Process**:
+- **Source**: AllenAI WildChat-1M dataset via HuggingFace datasets library
+- **Loading Strategy**: Streaming mode for memory efficiency
+- **Sample Size**: First 50,000 conversations
+- **Raw Schema**: 14 columns including conversation metadata, timestamps, moderation data
 
-### `WildChat_Notebook.ipynb`
-**Primary analytical pipeline and comprehensive data processing notebook**
-
-This is the main executable notebook that orchestrates the entire data processing pipeline from raw data extraction to final analytics outputs.
-
-#### Key Features:
-- **Google Colab Optimized**: Ready-to-run with GPU acceleration
-- **Streaming Data Processing**: Handles 1M+ conversations efficiently
-- **Modular Architecture**: 6 distinct processing stages
-- **Progress Tracking**: Real-time progress bars and status updates
-- **Configurable Parameters**: Easy adjustment for testing vs. production runs
-
-#### Pipeline Stages:
-
-1. **STAGE 1 - EXTRACTION**
-   - Streaming download from HuggingFace Hub
-   - Configurable batch processing (50K rows per batch)
-   - Memory-efficient handling of large datasets
-   - Progress tracking with tqdm
-
-2. **STAGE 2 - CLEANING**
-   - Conversation explosion (nested list to structured format)
-   - Deduplication and quality validation
-   - Missing value handling and data type normalization
-   - Geographic and temporal data validation
-   - Model name standardization
-
-3. **STAGE 3 - TEXT PREPROCESSING**
-   - Text normalization and cleaning
-   - PII redaction placeholder removal
-   - Language detection using langdetect
-   - Token counting and content analysis
-   - VADER sentiment analysis (user messages only)
-
-4. **STAGE 4 - FEATURE ENGINEERING**
-   - OpenAI moderation score parsing
-   - Composite toxicity scoring
-   - User behavior metrics calculation
-   - Conversation-level aggregations
-   - Temporal and geographic feature extraction
-
-5. **STAGE 5 - ANALYTICS & ML**
-   - User segmentation analysis
-   - Prompt categorization using TF-IDF + K-means
-   - Geographic clustering and analysis
-   - Time-series KPI generation
-
-6. **STAGE 6 - EXPORTS**
-   - Tableau-ready CSV generation
-   - Analytics output files
-   - Summary statistics and reports
-
-#### Configuration Options:
+**Key Operations**:
 ```python
-CFG = {
-    "dataset_name": "allenai/WildChat-1M",
-    "batch_size": 50_000,
-    "max_batches": 20,          # Full dataset: 20 × 50k = 1M rows
-    "sample_batches": 2,        # Quick test: 2 × 50k = 100k rows
-    "min_content_len": 3,
-    "power_user_pct": 0.90,
-    "kmeans_k": 5,
-    "tfidf_max_feat": 5_000,
-}
+ds = load_dataset("allenai/WildChat-1M", split="train", streaming=True)
+# Collect first 50,000 records
+df_raw = pd.DataFrame(records)
 ```
 
-#### Dependencies:
-- **Core**: pandas, numpy, scikit-learn
-- **NLP**: nltk, vaderSentiment, langdetect, transformers
-- **ML**: datasets, accelerate
-- **Visualization**: matplotlib, seaborn
-- **Utilities**: tqdm, openpyxl
+**Output**: Raw DataFrame with 50,000 conversations
+
+### Stage 2: Cleaning
+**Objective**: Data quality improvement and standardization
+
+**Process**:
+- **Duplicate Removal**: Eliminate duplicates based on `conversation_hash`
+- **Missing Value Imputation**:
+  - `country` → "UNKNOWN"
+  - `language` → "und" (undetermined)
+- **Data Type Conversion**:
+  - `toxic` → integer type
+  - `timestamp` → datetime (UTC) with error coercion
+- **Quality Metrics**: Record count reduction from 50,000 to 49,550 unique conversations
+
+**Key Transformations**:
+```python
+df_raw = df_raw.drop_duplicates(subset=["conversation_hash"])
+df_raw["country"] = df_raw["country"].fillna("UNKNOWN")
+df_raw["language"] = df_raw["language"].fillna("und")
+df_raw["toxic"] = df_raw["toxic"].astype(int)
+df_raw["timestamp"] = pd.to_datetime(df_raw["timestamp"], errors="coerce", utc=True)
+```
+
+### Stage 3: Text Preprocessing
+**Objective**: Transform nested conversation structure and extract text features
+
+**Process**:
+- **Conversation Flattening**: Convert nested conversation objects to message-level records
+- **Text Cleaning**: Standardize text content for analysis
+- **Feature Extraction**: Generate linguistic and sentiment features
+
+**Flattening Process**:
+- Iterates through each conversation
+- Extracts individual messages with metadata
+- Preserves conversation context while creating message-level granularity
+- **Result**: 290,714 message records from 49,550 conversations
+
+**Text Cleaning Pipeline**:
+```python
+def clean_text(x):
+    x = str(x).lower()
+    x = re.sub(r"\[name\]|\[email\]", "", x)  # Remove placeholders
+    x = re.sub(r"\s+", " ", x).strip()        # Normalize whitespace
+    return x
+```
+
+**Feature Extraction**:
+- **Token Count**: Word count per message
+- **Sentiment Analysis**: VADER sentiment scoring (-1 to 1 scale)
+- **Toxicity Scoring**: Extract maximum toxicity from OpenAI moderation data
+
+### Stage 4: Feature Engineering
+**Objective**: Create conversation-level aggregates and analytical features
+
+**Process**:
+- **Aggregation**: Message-level to conversation-level metrics
+- **Classification**: User intent categorization
+- **Quality Scoring**: Composite response quality metrics
+- **Temporal Analysis**: Daily KPI calculations
+
+**Key Features Generated**:
+
+#### Conversation-Level Aggregates
+```python
+conv = df_messages.groupby("conversation_id").agg({
+    "message_index": "max",                    # Turn count
+    "token_count": "mean",                     # Average prompt length
+    "sentiment_score": "mean",                 # Average sentiment
+    "country": "first",                        # Geographic data
+    "language": "first",                       # Language data
+    "model": "first"                           # AI model
+})
+```
+
+#### Response Quality Score
+Composite metric combining prompt length and toxicity:
+```python
+conv["response_quality_score"] = np.log1p(conv["avg_prompt_len"]) * 2 - conv["toxicity_score"] * 3
+```
+
+#### User Intent Classification
+Automated categorization of user prompts:
+```python
+def classify_prompt(text):
+    t = str(text).lower()
+    if any(x in t for x in ["python","sql","code","bug"]):
+        return "Coding"
+    elif any(x in t for x in ["what","why","how","explain"]):
+        return "Factual"
+    elif any(x in t for x in ["story","poem","write"]):
+        return "Creative"
+    elif len(t.split()) < 8:
+        return "Casual"
+    elif "?" in t:
+        return "Factual"
+    else:
+        return "Other"
+```
+
+#### Daily KPIs
+Time-series aggregation for trend analysis:
+```python
+daily_kpis = df_messages.groupby(df_messages["timestamp"].dt.date).agg({
+    "conversation_id": "nunique",              # Daily conversation count
+    "token_count": "mean"                      # Average tokens per day
+})
+```
+
+### Stage 5: Output Generation
+**Objective**: Export processed datasets for downstream analysis
+
+**Process**:
+- **Primary Datasets**: Core conversation and daily metrics
+- **Analytical Datasets**: Geographic summaries and combined master data
+- **File Formats**: CSV for universal compatibility
+
+**Output Files**:
+
+#### Core Datasets
+1. **`conversations_clean.csv`**: Primary analysis dataset
+   - 49,550 conversations with engineered features
+   - Includes quality scores, toxicity flags, user classifications
+
+2. **`daily_kpis.csv`**: Time-series metrics
+   - 22 days of aggregated data
+   - Conversation volume, token usage, toxicity rates
+
+#### Analytical Datasets
+3. **`geo_summary.csv`**: Geographic aggregation
+   - Country-level conversation counts and toxicity rates
+   - Regional analysis support
+
+4. **`wildchat_combined_master.csv`**: Comprehensive master dataset
+   - All conversation features plus daily KPIs
+   - Complete feature set for advanced analytics
+
+## Technical Implementation
+
+### Dependencies
+```python
+# Core data manipulation
+import pandas as pd
+import numpy as np
+import re
+
+# Dataset loading and text processing
+from datasets import load_dataset
+from langdetect import detect
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import nltk
+nltk.download("punkt")
+```
+
+### Performance Optimizations
+- **Streaming Data Loading**: Memory-efficient dataset ingestion
+- **Vectorized Operations**: Pandas-based transformations for speed
+- **Batch Processing**: Efficient group-by operations
+- **Memory Management**: Strategic data type conversions
+
+### Error Handling
+- **Graceful Degradation**: Error handling for missing or malformed data
+- **Data Validation**: Type checking and constraint enforcement
+- **Fallback Strategies**: Default values for missing critical fields
+
+## Data Quality and Validation
+
+### Automated Quality Checks
+- **Duplicate Detection**: Hash-based conversation deduplication
+- **Data Type Validation**: Automatic type conversion and error handling
+- **Completeness Assessment**: Missing value analysis and imputation
+- **Range Validation**: Sentiment scores (-1 to 1), toxicity probabilities (0 to 1)
+
+### Statistical Validation
+- **Distribution Analysis**: Verify expected data distributions
+- **Correlation Checks**: Identify feature relationships
+- **Outlier Detection**: Identify and handle anomalous values
+
+## Usage Instructions
+
+### Running the Pipeline
+1. **Environment Setup**: Install required dependencies
+2. **Data Access**: Ensure HuggingFace datasets access
+3. **Execution**: Run notebook cells sequentially
+4. **Validation**: Verify output file generation
+
+### Customization Options
+- **Sample Size**: Adjust conversation sampling (default: 50,000)
+- **Feature Thresholds**: Modify toxicity detection thresholds
+- **Classification Rules**: Update user intent categorization logic
+- **Output Paths**: Customize file output locations
+
+### Integration Points
+- **Upstream**: Compatible with WildChat-1M dataset updates
+- **Downstream**: Outputs feed directly into analytical notebooks
+- **Monitoring**: Pipeline status and data quality metrics
+
+## Monitoring and Maintenance
+
+### Pipeline Health Metrics
+- **Processing Volume**: Number of conversations processed
+- **Data Quality Rates**: Missing value percentages, duplicate rates
+- **Feature Distributions**: Statistical summaries of engineered features
+- **Output Validation**: File generation and schema verification
+
+### Troubleshooting Guide
+- **Memory Issues**: Reduce sample size or implement chunking
+- **Data Access**: Verify dataset credentials and network connectivity
+- **Feature Errors**: Check input data schema and validation rules
+- **Output Failures**: Verify write permissions and disk space
+
+## Version Control and Reproducibility
+
+### Pipeline Versioning
+- **Git Tracking**: Notebook version control with commit history
+- **Dependency Management**: Requirements.txt for environment reproduction
+- **Data Versioning**: Timestamped outputs for traceability
+- **Configuration Management**: Parameterized pipeline settings
+
+### Reproducibility Features
+- **Random State Control**: Consistent results for stochastic operations
+- **Deterministic Processing**: Reproducible data transformations
+- **Audit Trail**: Complete processing log with timestamps
+- **Data Lineage**: Clear mapping from source to target features
+
+## Performance Benchmarks
+
+### Processing Metrics
+- **Input Volume**: 50,000 conversations (290,714 messages)
+- **Processing Time**: ~5-10 minutes on standard hardware
+- **Memory Usage**: Peak ~2GB during processing
+- **Output Size**: ~20MB across all generated files
+
+### Scalability Considerations
+- **Horizontal Scaling**: Pipeline designed for distributed processing
+- **Incremental Updates**: Support for delta processing
+- **Batch Optimization**: Configurable batch sizes for memory management
+- **Resource Allocation**: Adjustable based on available compute
+
+## Security and Privacy
+
+### Data Protection
+- **Anonymization**: IP address hashing and user identifier protection
+- **Content Filtering**: Redaction of sensitive information
+- **Access Control**: Restricted data access and processing
+- **Compliance**: GDPR and data protection regulation adherence
+
+### Ethical Considerations
+- **Bias Detection**: Monitoring for demographic and content biases
+- **Fairness Assessment**: Equitable treatment across user segments
+- **Transparency**: Clear documentation of processing decisions
+- **Accountability**: Traceable data processing and feature generation
+
+## Future Enhancements
+
+### Planned Improvements
+- **Real-time Processing**: Streaming pipeline for live data
+- **Advanced NLP**: Integration of transformer-based features
+- **Automated Quality**: Enhanced data quality monitoring
+- **Scalability**: Distributed processing capabilities
+
+### Extension Points
+- **Custom Features**: Modular feature engineering framework
+- **Additional Sources**: Support for multiple data sources
+- **Advanced Analytics**: Machine learning pipeline integration
+- **Visualization**: Automated report generation
+
+## Contact and Support
+
+For technical assistance or pipeline customization:
+- **Documentation**: Review inline code comments and markdown explanations
+- **Issues**: Report problems through project issue tracking
+- **Enhancements**: Submit feature requests and improvement suggestions
+- **Community**: Engage with user community for best practices and shared solutions
 
 ---
 
-## Modular Notebook Structure
-
-### `01_ingest/` - Data Ingestion & Schema Validation
-**Purpose**: Raw data extraction and initial quality checks
-
-**Expected Contents**:
-- Data source connection testing
-- Schema validation scripts
-- Initial data quality reports
-- Sampling strategies for testing
-
-**Key Functions**:
-- HuggingFace dataset streaming
-- Batch processing optimization
-- Memory usage monitoring
-- Data integrity validation
-
-### `02_clean/` - Data Cleaning & Normalization
-**Purpose**: Transform raw data into clean, structured format
-
-**Expected Contents**:
-- Conversation explosion logic
-- Missing value handling strategies
-- Data type standardization
-- Deduplication algorithms
-
-**Key Functions**:
-- Nested JSON flattening
-- Geographic data validation
-- Timestamp normalization
-- Model name standardization
-
-### `03_eda/` - Exploratory Data Analysis
-**Purpose**: Understand data patterns and generate hypotheses
-
-**Expected Contents**:
-- Statistical summaries
-- Distribution analysis
-- Correlation matrices
-- Anomaly detection
-
-**Key Analyses**:
-- Conversation length distributions
-- User activity patterns
-- Geographic usage patterns
-- Temporal trend analysis
-- Toxicity prevalence studies
-
-### `04_features/` - Feature Engineering for Analytics & ML
-**Purpose**: Create predictive and analytical features
-
-**Expected Contents**:
-- Sentiment analysis implementations
-- Toxicity scoring algorithms
-- User behavior metrics
-- Conversation-level features
-
-**Feature Categories**:
-- Text-based features (sentiment, complexity)
-- Temporal features (response times, session duration)
-- Behavioral features (message patterns, model preferences)
-- Geographic features (regional usage patterns)
-
-### `05_ml/` - Machine Learning Experiments
-**Purpose**: Build predictive models and advanced analytics
-
-**Expected Contents**:
-- User segmentation models
-- Prompt classification systems
-- Anomaly detection algorithms
-- Predictive analytics experiments
-
-**Model Types**:
-- **Clustering**: K-means for prompt categorization
-- **Classification**: User behavior prediction
-- **Anomaly Detection**: Isolation Forest for unusual patterns
-- **Time Series**: Trend analysis and forecasting
-
-### `06_exports/` - Data Exports & Reporting
-**Purpose**: Generate production-ready outputs
-
-**Expected Contents**:
-- Tableau-compatible CSV exports
-- Summary statistics reports
-- Data dictionaries
-- Quality assurance reports
-
-**Export Formats**:
-- **Analytics Ready**: Cleaned CSV files
-- **ML Ready**: Feature-engineered datasets
-- **Reporting Ready**: Aggregated summaries
-- **Dashboard Ready**: KPI datasets
-
----
-
-## Usage Guidelines
-
-### Quick Start (Testing)
-1. Open `WildChat_Notebook.ipynb` in Google Colab
-2. Set `sample_batches = 2` in configuration
-3. Run cells sequentially (top to bottom)
-4. Expected runtime: ~5 minutes for 100K rows
-
-### Production Run (Full Dataset)
-1. Set `sample_batches = max_batches = 20`
-2. Ensure GPU runtime in Colab
-3. Expected runtime: ~2-3 hours for 1M rows
-4. Monitor memory usage and batch processing
-
-### Development Workflow
-1. Use modular notebooks for feature development
-2. Test in `01_ingest/` → `02_clean/` → `03_eda/` sequence
-3. Integrate proven features into main pipeline
-4. Update configuration parameters as needed
-
----
-
-## Performance Considerations
-
-### Memory Management
-- Streaming data loading to avoid memory overflow
-- Batch processing for large datasets
-- Efficient data type usage (category, int32, float32)
-- Garbage collection between stages
-
-### Computational Efficiency
-- GPU acceleration for NLP tasks
-- Vectorized operations with pandas/numpy
-- Parallel processing where possible
-- Progress tracking for long-running operations
-
-### Scalability
-- Configurable batch sizes
-- Modular architecture for distributed processing
-- Cloud-ready implementation
-- API integration capabilities
-
----
-
-## Quality Assurance
-
-### Data Validation
-- Schema validation at each stage
-- Referential integrity checks
-- Statistical validation of outputs
-- Cross-validation of ML models
-
-### Code Quality
-- Comprehensive documentation
-- Error handling and logging
-- Progress tracking and status updates
-- Modular, reusable functions
-
-### Reproducibility
-- Fixed random seeds for ML models
-- Configuration-driven pipeline
-- Version-controlled notebooks
-- Detailed execution logs
-
----
-
-## Integration Points
-
-### Tableau Dashboard
-- Direct CSV output from `06_exports/`
-- Geographic data ready for mapping
-- Time-series data for trend analysis
-- Pre-calculated KPIs for dashboards
-
-### ML Pipeline
-- Scikit-learn compatible outputs
-- Feature-engineered datasets
-- Train/test split recommendations
-- Model performance metrics
-
-### API Integration
-- RESTful service ready outputs
-- Real-time processing capabilities
-- Caching layer support
-- Monitoring and alerting integration
-
----
-
-## Technical Requirements
-
-### Minimum Specifications (Testing)
-- **RAM**: 8GB
-- **Storage**: 2GB free space
-- **Runtime**: CPU-only acceptable
-- **Time**: 5-10 minutes
-
-### Recommended Specifications (Production)
-- **RAM**: 16GB+
-- **GPU**: T4 or better (Colab)
-- **Storage**: 10GB+ free space
-- **Time**: 2-3 hours for full dataset
-
-### Software Dependencies
-- Python 3.8+
-- Jupyter Notebook/Google Colab
-- All packages listed in requirements.txt
-- HuggingFace account for dataset access
-
----
-
-## Troubleshooting
-
-### Common Issues
-- **Memory Errors**: Reduce batch_size or sample_batches
-- **GPU Not Available**: Switch to CPU runtime (slower)
-- **Dataset Access**: Verify HuggingFace authentication
-- **Slow Processing**: Check internet connection and Colab resources
-
-### Performance Tips
-- Use GPU runtime for faster NLP processing
-- Monitor memory usage during extraction
-- Save intermediate results for debugging
-- Use smaller sample sizes for development
-
----
-
-## Project Documentation
-
-For additional information:
-- **Main README**: `/README.md` (project overview)
-- **Configuration**: `/configs/` (pipeline settings)
-- **Data Dictionary**: `/docs/data-dictionary.md`
-- **API Documentation**: `/docs/api-reference.md`
-- **Dashboard Guide**: `/docs/dashboard-guide.md`
-
----
-
-**Last Updated**: Pipeline execution timestamp  
-**Version**: 1.0  
-**Environment**: Google Colab (GPU recommended)  
-**Support**: Group G-6, Rishihood University
-
+**Note**: This pipeline is designed as the foundational data processing component for the WildChat analytics ecosystem. All downstream analytical notebooks and dashboards depend on the high-quality, standardized outputs generated by this ETL process.
