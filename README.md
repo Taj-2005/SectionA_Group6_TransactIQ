@@ -360,13 +360,15 @@ Executive, Operational, and Safety dashboards serve different audiences with dif
 
 | Name                        | Role                | Core Contribution                                             |
 | --------------------------- | ------------------- | ------------------------------------------------------------- |
-| **Shaik Tajuddin**          | Project Lead        | End-to-end architecture, KPI framework, stakeholder alignment |
-| **Gaurav Meena**            | Visualisation Lead  | Tableau dashboard design and BI system build                  |
+| **Shaik Tajuddin**          | Project Lead        | End-to-end architecture, KPI framework, stakeholder alignment, Tableau dashboard suite |
+| **Gaurav Meena**            | Visualisation Support  | Supported the Tableau work (design feedback, QA, and review)  |
 | **Dakarapu Hemamdhar Nath** | Data Lead           | Dataset sourcing, schema design, pipeline coordination        |
 | **Sushant Guri**            | Data & Quality Lead | ETL validation, data quality assurance, QA documentation      |
 | **Jivit Rana**              | ETL Lead            | Python pipeline engineering, feature extraction, exports      |
 | **Parthraj Singh Bhati**    | Analytics Lead      | EDA, statistical analysis, segmentation and anomaly modelling |
 | **Samarth Chaudhary**       | Delivery Lead       | Report writing, slide deck, submission coordination           |
+
+**Tableau ownership note**: The Tableau dashboard suite was built from scratch by **Taj**. **Gaurav** contributed support (feedback, QA, and review).
 
 ---
 

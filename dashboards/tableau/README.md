@@ -2,6 +2,8 @@
 
 Tableau deliverables for Executive, Operational, and Safety stakeholders. Contains workbooks, published URLs, screenshots, and supporting design assets.
 
+**Authorship**: The Tableau dashboard suite was built from scratch by **Taj**. **Gaurav** provided support (feedback, QA, and review).
+
 ---
 
 ## 📁 Folder Contents
@@ -344,7 +346,7 @@ Update Path: /data/processed/conversations_clean.csv
 
 **Dashboard Changes?**
 
-- Contact: Visualization Lead (Gaurav Meena, `@Gaurav-meena95`)
+- Contact: Owner (Taj, `@Taj-2005`) — with support from Gaurav Meena (`@Gaurav-meena95`)
 
 **Data Issues?**
 

@@ -12,6 +12,8 @@ The dashboard suite translates raw analytics into **decision-ready visual intell
 - **Operational Dashboard**: Product Managers, ML Engineers, Data Analysts → Detailed insights, filters, drill-downs
 - **Safety Dashboard**: Safety & Trust Team, Policy & Legal, Compliance → Real-time toxicity monitoring, anomaly alerts
 
+**Authorship**: The Tableau dashboard suite was built from scratch by **Taj**. **Gaurav** supported with feedback, QA, and review.
+
 ---
 
 ## 📁 Folder Structure

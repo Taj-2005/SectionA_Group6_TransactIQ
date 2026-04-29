@@ -9,13 +9,13 @@
 ### 1. Shaik Tajuddin
 
 **Role:** Project Lead
-**Core Contribution:** End-to-end architecture, KPI framework, stakeholder alignment
+**Core Contribution:** End-to-end architecture, KPI framework, stakeholder alignment, Tableau dashboard suite
 
 
-| Link                                                                                                | URL                                      |
-| --------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| 🔗 Portfolio                                                                                        | [Taj's Portfolio](https://)              |
-| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@Taj-2005](https://github.com/Taj-2005) |
+| Link                                                                                                | URL                                                                   |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| 🔗 Portfolio                                                                                        | [Taj's Portfolio](https://taj-2005.github.io/Portfolio_Data_Analyst/) |
+| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@Taj-2005](https://github.com/Taj-2005)                              |
 
 ---
 
@@ -25,10 +25,10 @@
 **Core Contribution:** Python pipeline engineering, feature extraction, exports
 
 
-| Link                                                                                                | URL                                    |
-| --------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| 🔗 Portfolio                                                                                        | [Jivit's Portfolio](https://)          |
-| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@Jivit87](https://github.com/Jivit87) |
+| Link                                                                                                | URL                                                         |
+| --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| 🔗 Portfolio                                                                                        | [Jivit's Portfolio](https://dva-prortfolio-ten.vercel.app/) |
+| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@Jivit87](https://github.com/Jivit87)                      |
 
 ---
 
@@ -40,7 +40,7 @@
 
 | Link                                                                                                | URL                                                          |
 | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| 🔗 Portfolio                                                                                        | [Parth's Portfolio](https://)                                |
+| 🔗 Portfolio                                                                                        | [Parth's Portfolio](https://dva-portfolio-nu.vercel.app/)    |
 | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@parthrajsinghbhati](https://github.com/parthrajsinghbhati) |
 
 ---
@@ -53,7 +53,7 @@
 
 | Link                                                                                                | URL                                                  |
 | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 🔗 Portfolio                                                                                        | [Add your portfolio link]                            |
+| 🔗 Portfolio                                                                                        | [Samarth's Portfolio](https://)                      |
 | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@iamsamarth1011](https://github.com/iamsamarth1011) |
 
 ---
@@ -73,14 +73,14 @@
 
 ### 6. Gaurav Meena
 
-**Role:** Visualisation Lead
-**Core Contribution:** Tableau dashboard design and BI system build
+**Role:** Visualisation Support
+**Core Contribution:** Supported the BI deliverables via feedback, QA, and review
 
 
-| Link                                                                                                | URL                                                  |
-| --------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 🔗 Portfolio                                                                                        | [Add your portfolio link]                            |
-| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@Gaurav-meena95](https://github.com/Gaurav-meena95) |
+| Link                                                                                                | URL                                                                |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 🔗 Portfolio                                                                                        | [Gaurav's Portfolio](https://github-portfolio-mu-drab.vercel.app/) |
+| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@Gaurav-meena95](https://github.com/Gaurav-meena95)               |
 
 ---
 
@@ -90,10 +90,10 @@
 **Core Contribution:** ETL validation, data quality assurance, QA documentation
 
 
-| Link                                                                                                | URL                                            |
-| --------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| 🔗 Portfolio                                                                                        | [Add your portfolio link]                      |
-| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@sushantguri](https://github.com/sushantguri) |
+| Link                                                                                                | URL                                                            |
+| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| 🔗 Portfolio                                                                                        | [Sushant's Portfolio](https://dva-portfolio-umber.vercel.app/) |
+| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@sushantguri](https://github.com/sushantguri)                 |
 
 ---
 
@@ -103,7 +103,7 @@
 
 - **1M+ Conversations Analyzed** from WildChat dataset
 - **6 Analysis-Ready Datasets** generated through ETL pipeline
-- **3-Dashboard Suite** built with Tableau
+- **3-Dashboard Suite** built with Tableau (**built from scratch only by Taj**)
 - **Advanced NLP Processing** including tokenization, sentiment analysis, and prompt categorization
 - **Geographic & Behavioral Segmentation** for targeted insights
 
