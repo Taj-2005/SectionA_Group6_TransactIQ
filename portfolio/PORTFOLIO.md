@@ -13,7 +13,7 @@
 
 | Link                                                                                                | URL                                      |
 | --------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| 🔗 Portfolio                                                                                        | [Add your portfolio link]                |
+| 🔗 Portfolio                                                                                        | [Taj's Portfolio](https://)              |
 | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@Taj-2005](https://github.com/Taj-2005) |
 
 ---
@@ -25,7 +25,7 @@
 
 | Link                                                                                                | URL                                    |
 | --------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| 🔗 Portfolio                                                                                        | [Add your portfolio link]              |
+| 🔗 Portfolio                                                                                        | [Jivit's Portfolio](https://)          |
 | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@Jivit87](https://github.com/Jivit87) |
 
 ---

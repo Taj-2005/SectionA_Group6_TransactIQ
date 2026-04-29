@@ -23,14 +23,14 @@ Repository for comprehensive project findings, strategic recommendations, and pr
 - **Recommendations**: 5 prioritized actions with ROI estimates
 - **Conclusion & Next Steps**: Future enhancements, long-term vision
 
-**Audience**: Academic committee, business stakeholders, executive leadership  
+**Audience**: Academic committee, business stakeholders, executive leadership
 **Length**: ~40–60 pages (includes visualizations, tables, appendices)
 
 ---
 
 ### Presentation Materials
 
-#### `WildChat_Analytics_Capstone_Presentation.pptx`
+#### `WildChat_Analytics_Capstone_Presentation.pdf`
 
 **Deck for Stakeholder Presentation** — Visual summary optimized for live delivery
 
@@ -134,23 +134,25 @@ reports/
 
 ### 5 Strategic Insights (Executive Brief)
 
-| #   | Finding                                    | Impact                                    | Recommendation                                                        |
-| --- | ------------------------------------------ | ----------------------------------------- | --------------------------------------------------------------------- |
-| 1   | **62% drop-off at Turn 2**                 | Model quality failure at scale            | Invest in first-response improvements; target +15–25% engagement lift |
-| 2   | **Toxicity spikes 10 PM–2 AM**             | Safety vulnerability in high-risk windows | Deploy time-aware automated moderation filters                        |
-| 3   | **Top 8% users = 41% activity**            | Extreme engagement concentration          | Create power-user retention programs                                  |
-| 4   | **2.4× non-English failure rate**          | Language quality equity gap               | Fast-track multilingual fine-tuning                                   |
-| 5   | **Sessions >8 turns = 35% higher quality** | Early quality drives conversation depth   | Maximize ROI: invest in Turns 1–3                                     |
+
+| # | Finding                                    | Impact                                    | Recommendation                                                         |
+| - | ------------------------------------------ | ----------------------------------------- | ---------------------------------------------------------------------- |
+| 1 | **62% drop-off at Turn 2**                 | Model quality failure at scale            | Invest in first-response improvements; target +15–25% engagement lift |
+| 2 | **Toxicity spikes 10 PM–2 AM**            | Safety vulnerability in high-risk windows | Deploy time-aware automated moderation filters                         |
+| 3 | **Top 8% users = 41% activity**            | Extreme engagement concentration          | Create power-user retention programs                                   |
+| 4 | **2.4× non-English failure rate**         | Language quality equity gap               | Fast-track multilingual fine-tuning                                    |
+| 5 | **Sessions >8 turns = 35% higher quality** | Early quality drives conversation depth   | Maximize ROI: invest in Turns 1–3                                     |
 
 ### Expected Business Impact
 
-| Metric                            | Current       | Post-Implementation  | Lift                 |
-| --------------------------------- | ------------- | -------------------- | -------------------- |
-| **User Engagement Rate**          | 38%           | 45–52%               | +15–25%              |
-| **Conversation Drop-off**         | 62%           | 47–55%               | -10–15%              |
-| **Toxicity Detection Efficiency** | Manual review | 60% automated        | -60% manual workload |
-| **Model Quality (Avg Score)**     | 7.94 / 10     | 8.5–8.8 / 10         | +8–11%               |
-| **Power-User Retention**          | Baseline      | +20–30% program lift | +20–30%              |
+
+| Metric                            | Current       | Post-Implementation   | Lift                 |
+| --------------------------------- | ------------- | --------------------- | -------------------- |
+| **User Engagement Rate**          | 38%           | 45–52%               | +15–25%             |
+| **Conversation Drop-off**         | 62%           | 47–55%               | -10–15%             |
+| **Toxicity Detection Efficiency** | Manual review | 60% automated         | -60% manual workload |
+| **Model Quality (Avg Score)**     | 7.94 / 10     | 8.5–8.8 / 10         | +8–11%              |
+| **Power-User Retention**          | Baseline      | +20–30% program lift | +20–30%             |
 
 ---
 
@@ -182,6 +184,7 @@ reports/
 
 ## 📊 Report Statistics
 
+
 | Metric                | Value                                      |
 | --------------------- | ------------------------------------------ |
 | **Total Pages**       | ~50 (report)                               |
@@ -198,14 +201,14 @@ reports/
 
 ### Compliance Checklist
 
-- [x] Executive summary (concise, compelling)
-- [x] Clear problem statement (market need + organizational context)
-- [x] Rigorous methodology (data source, processing, validation)
-- [x] Substantiated findings (p-values, effect sizes, confidence intervals)
-- [x] Actionable recommendations (prioritized by impact/effort)
-- [x] Professional visualization (publication-quality figures)
-- [x] Complete citations & data provenance
-- [x] Reproducibility notes (tools, versions, code links)
+- [X]  Executive summary (concise, compelling)
+- [X]  Clear problem statement (market need + organizational context)
+- [X]  Rigorous methodology (data source, processing, validation)
+- [X]  Substantiated findings (p-values, effect sizes, confidence intervals)
+- [X]  Actionable recommendations (prioritized by impact/effort)
+- [X]  Professional visualization (publication-quality figures)
+- [X]  Complete citations & data provenance
+- [X]  Reproducibility notes (tools, versions, code links)
 
 ### For Peer Review / Publication
 
@@ -258,6 +261,7 @@ reports/
 
 ## 🔄 Version Control
 
+
 | Version | Date           | Changes                               |
 | ------- | -------------- | ------------------------------------- |
 | v1.0    | [Initial date] | Baseline report; preliminary findings |
@@ -270,16 +274,16 @@ reports/
 
 Before finalizing reports:
 
-- [ ] All data points verified against source datasets
-- [ ] Calculations spot-checked (KPI formulas, statistical tests)
-- [ ] Visualizations are high-resolution (300+ DPI for print)
-- [ ] Charts are accessible (alt text, colorblind-friendly palettes)
-- [ ] Recommendations are backed by evidence
-- [ ] Executive summary is <2 pages
-- [ ] No confidential data exposed
-- [ ] Links to dashboards are current & accessible
-- [ ] Grammar & spelling check completed
-- [ ] Formatting is consistent (fonts, colors, spacing)
+- [ ]  All data points verified against source datasets
+- [ ]  Calculations spot-checked (KPI formulas, statistical tests)
+- [ ]  Visualizations are high-resolution (300+ DPI for print)
+- [ ]  Charts are accessible (alt text, colorblind-friendly palettes)
+- [ ]  Recommendations are backed by evidence
+- [ ]  Executive summary is <2 pages
+- [ ]  No confidential data exposed
+- [ ]  Links to dashboards are current & accessible
+- [ ]  Grammar & spelling check completed
+- [ ]  Formatting is consistent (fonts, colors, spacing)
 
 ---
 
