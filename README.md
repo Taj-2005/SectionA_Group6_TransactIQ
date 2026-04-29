@@ -1,4 +1,5 @@
 # WildChat Analytics Platform
+<!-- Project Overview -->
 
 > **Turning 1M+ real-world AI conversations into operational intelligence.**  
 > End-to-end analytics platform — Python ETL · NLP · Tableau BI · Behavioral Segmentation · Safety Monitoring
