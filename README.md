@@ -1,4 +1,5 @@
 # WildChat Analytics Platform
+<!-- Project Overview -->
 
 > **Turning 1M+ real-world AI conversations into operational intelligence.**  
 > End-to-end analytics platform — Python ETL · NLP · Tableau BI · Behavioral Segmentation · Safety Monitoring
@@ -85,6 +86,7 @@ The concentration ratio exceeds standard Pareto distributions. Platform health d
 
 ---
 
+<!-- Core Architecture Details -->
 ## Architecture
 
 ### Pipeline Stages
@@ -368,6 +370,7 @@ Executive, Operational, and Safety dashboards serve different audiences with dif
 
 ---
 
+<!-- Additional Resources Links -->
 ## Links
 
 | Resource        | URL                                                                                                                                                                                      |
