@@ -9,6 +9,7 @@
 ## Installation Steps
 
 ### 1. Clone Repository
+<!-- Clone -->
 
 ```bash
 git clone https://github.com/Taj-2005/SectionA_Group6_WildChat.git
