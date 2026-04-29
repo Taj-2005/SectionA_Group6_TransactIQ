@@ -10,6 +10,7 @@ The **WildChat Analytics Platform** consists of three complementary Tableau dash
 
 All dashboards are **updated daily** and accessible online via [Tableau Public](https://public.tableau.com/views/WildChat_Analytics_Platform/ExecutiveSummary?:language=en-GB&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link).
 
+<!-- Tableau Link -->
 ---
 
 ## 📊 Executive Dashboard
