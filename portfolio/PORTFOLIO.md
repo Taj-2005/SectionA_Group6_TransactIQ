@@ -11,6 +11,7 @@
 **Role:** Project Lead
 **Core Contribution:** End-to-end architecture, KPI framework, stakeholder alignment
 
+
 | Link                                                                                                | URL                                      |
 | --------------------------------------------------------------------------------------------------- | ---------------------------------------- |
 | 🔗 Portfolio                                                                                        | [Taj's Portfolio](https://)              |
@@ -22,6 +23,7 @@
 
 **Role:** ETL Lead
 **Core Contribution:** Python pipeline engineering, feature extraction, exports
+
 
 | Link                                                                                                | URL                                    |
 | --------------------------------------------------------------------------------------------------- | -------------------------------------- |
@@ -35,6 +37,7 @@
 **Role:** Analytics Lead
 **Core Contribution:** EDA, statistical analysis, segmentation and anomaly modelling
 
+
 | Link                                                                                                | URL                                                          |
 | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | 🔗 Portfolio                                                                                        | [Parth's Portfolio](https://)                                |
@@ -46,6 +49,7 @@
 
 **Role:** Delivery Lead
 **Core Contribution:** Report writing, slide deck, submission coordination
+
 
 | Link                                                                                                | URL                                                  |
 | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
@@ -59,9 +63,10 @@
 **Role:** Data Lead
 **Core Contribution:** Dataset sourcing, schema design, pipeline coordination
 
+
 | Link                                                                                                | URL                                                                 |
 | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| 🔗 Portfolio                                                                                        | [Hemamdhar's Portfolio](https://hemamdhar.github.io/DVA_Portfolio/) |
+| 🔗 Portfolio                                                                                        | [Hememdhar's Portfolio](https://hemamdhar.github.io/DVA_Portfolio/) |
 | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) | [@Hemamdhar](https://github.com/Hemamdhar)                          |
 
 ---
@@ -70,6 +75,7 @@
 
 **Role:** Visualisation Lead
 **Core Contribution:** Tableau dashboard design and BI system build
+
 
 | Link                                                                                                | URL                                                  |
 | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
@@ -82,6 +88,7 @@
 
 **Role:** Data & Quality Lead
 **Core Contribution:** ETL validation, data quality assurance, QA documentation
+
 
 | Link                                                                                                | URL                                            |
 | --------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
@@ -111,13 +118,14 @@
 
 ## 📚 Resources
 
-| Resource              | Link                                                                                            |
-| --------------------- | ----------------------------------------------------------------------------------------------- |
-| 📖 Project Repository | [GitHub - SectionA_Group6_WildChat](https://github.com/Taj-2005/SectionA_Group6_WildChat)       |
-| 📊 Live Dashboard     | [Tableau Public](https://public.tableau.com/views/WildChat_Analytics_Platform/ExecutiveSummary) |
-| 📝 Developer Guide    | [DEVELOPER_GUIDE.md](../docs/guides/DEVELOPER_GUIDE.md)                                         |
-| 🏗️ Architecture Docs  | [ARCHITECTURE.md](../docs/architecture/ARCHITECTURE.md)                                         |
-| 📋 Data Dictionary    | [data_dictionary.md](../data/dictionaries/data_dictionary.md)                                   |
+
+| Resource               | Link                                                                                            |
+| ---------------------- | ----------------------------------------------------------------------------------------------- |
+| 📖 Project Repository  | [GitHub - SectionA_Group6_WildChat](https://github.com/Taj-2005/SectionA_Group6_WildChat)       |
+| 📊 Live Dashboard      | [Tableau Public](https://public.tableau.com/views/WildChat_Analytics_Platform/ExecutiveSummary) |
+| 📝 Developer Guide     | [DEVELOPER_GUIDE.md](../docs/guides/DEVELOPER_GUIDE.md)                                         |
+| 🏗️ Architecture Docs | [ARCHITECTURE.md](../docs/architecture/ARCHITECTURE.md)                                         |
+| 📋 Data Dictionary     | [data_dictionary.md](../data/dictionaries/data_dictionary.md)                                   |
 
 ---
 
