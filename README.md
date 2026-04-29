@@ -86,6 +86,7 @@ The concentration ratio exceeds standard Pareto distributions. Platform health d
 
 ---
 
+<!-- Core Architecture Details -->
 ## Architecture
 
 ### Pipeline Stages
